@@ -74,6 +74,8 @@ public class MyMinigame6 : MinigameDefBase
         Rects.Add(Rectright);
         Rects.Add(Recttop);
         Rects.Add(Rectleft);
+
+  
         Update();
     }
 
