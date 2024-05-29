@@ -2,6 +2,7 @@ using System.Data;
 using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using Framework.Sound;
 
 namespace Framework.Minigames.MinigameDefClasses;
 
@@ -9,7 +10,7 @@ public class MyMinigame6 : MinigameDefBase
 {
     public override string BackgroundImage { get; set; } = "/images/Arm_0_F.png";
     [Element]
-    public Rectangle? ProgressBar { get; set; }
+    public Rectangle ProgressBar { get; set; }
     int enemycounter = 0;
     int clickcount = 400; // Wie oft man auf den Kreis gedrückt hat (für die Farben zustädnig)
 
@@ -35,7 +36,7 @@ public class MyMinigame6 : MinigameDefBase
                      new Rectangle()
                      {
                          // Progressbar links (Spieler)
-                         Id = "Frog",
+                         Id = "Frog4",
                          X = 80,
                          Y = 100,
                          Width = 160,
@@ -44,12 +45,14 @@ public class MyMinigame6 : MinigameDefBase
                          Stroke = "green",
                          StrokeWidth = 1,
                          OnClick = (args) =>
-                         {  //ADDITEM NOCH MACHEN FRAMEWORK UPDATEN
-                             frog1 = 3;
+
+                         {  //ADITEM NOCH MACHEN FRAMEWORK UPDATEN
                              gamestart();
                              Elements.KillId("StartCircle");
-                             Elements.KillId("Frog");
+                             Elements.KillId("Frog4");
                              Update();
+                             frog1 = 3;
+
                          }
 
                      }
@@ -76,9 +79,7 @@ public class MyMinigame6 : MinigameDefBase
                   },
               }
           );
-
     }
-
     public void gamestart()
     {
 
@@ -91,7 +92,7 @@ public class MyMinigame6 : MinigameDefBase
             Id = "ProgressBar11",
             X = 350,
             Y = 50,
-            Width = 1000,
+            Width = 400,
             Height = 35,
             Fill = "yellow"
         };
@@ -106,6 +107,16 @@ public class MyMinigame6 : MinigameDefBase
 
         _ = StartEnemyClick();
         Update();
+    }
+
+    public void sounds()
+    {
+        List<string> Gamesounds = new List<string> { "Armwrestling3.wav", "Armwrestling2.wav", "Armwrestling1.wav" };
+
+        Random rnd = new Random();
+        int randomint = rnd.Next(0, 3);
+
+
     }
     public void circlechanger()
     {
@@ -125,9 +136,7 @@ public class MyMinigame6 : MinigameDefBase
               progressClick(Ycord, clickcount);
               tencount++;
               clickcount++;
-              tencount = 0;
               Update();
-
               imageswap();
               Elements.KillId("Circle1");
               circlechanger();
@@ -172,7 +181,7 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (clickcount2 <= 0)
         {
-            score++;
+            score--;
             clickcount2 = 400;
             ProgressBar.Fill = "yellow";
         }
@@ -216,10 +225,10 @@ public class MyMinigame6 : MinigameDefBase
         }
         else if (score == 2)
         {
-            Task.Delay(100);
             ProgressBar.Fill = "transparent";
             BackgroundImage = "/images/Arm_5.png";
             redcol = "transparent";
+            Update();
             gameover = true;
             Update();
         }
@@ -229,12 +238,12 @@ public class MyMinigame6 : MinigameDefBase
 
     public async Task StartEnemyClick()
     {
-        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(5));
+        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(200));
 
         while (await timer.WaitForNextTickAsync() && gameover == false)
         {
 
-            clickcount2 = clickcount2 + -10;
+            clickcount2 = clickcount2 + -30;
 
             switch (clickcount2)
             {
@@ -249,7 +258,7 @@ public class MyMinigame6 : MinigameDefBase
                     break;
             }
 
-            Task.Delay(2);
+
             Progress();
             imageswap();
             Update();
@@ -262,7 +271,7 @@ public class MyMinigame6 : MinigameDefBase
         //Stroke also Füllfarbe wird mit der Liste berechnet, für jeden Klick erhöht sich counter und somit verändert sich die Farbe
         if (gameover == false)
         {
-            clickcount2 = clickcount2 + 15 * frog1;
+            clickcount2 = clickcount2 + 12 * frog1;
 
             switch (clickcount2)
             {

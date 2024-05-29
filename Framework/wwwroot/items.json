@@ -17,8 +17,8 @@
         "image": "InventoryImages/Kaffeetasse.jpg"
     },
 
-    "frog": {
-        "name": "frog",
+    "froglick": {
+        "name": "froglick",
         "description": "One lick away...",
         "image": "InventoryImages/Glass_Frog.jpg"
     }
