@@ -16,16 +16,18 @@ public class MyMinigame6 : MinigameDefBase
 
     int clickcount2 = 400;
     int Ycord = 758; //Unterster Startpunkt
-    int enemyYcord = 758;
+
     int score = 0;
 
-    int tencount = 0;
+    int soundint = 0;
+
+
     int circleX = 1200;
 
     int circleY = 500;
     int frog1 = 1;
 
-    int soundint = 0;
+
     bool gameover = false;
 
     string redcol = "red";
@@ -114,13 +116,10 @@ public class MyMinigame6 : MinigameDefBase
     {
         List<string> Gamesounds = new List<string> { "/audio/Armwrestling3.wav", "/audio/Armwrestling2.wav", "/audio/Armwrestling1.wav" };
 
-        if (soundint >= 6)
-        {
-            Random rnd = new Random();
-            int randomint = rnd.Next(0, 3);
-            SoundService.PlaySound(Gamesounds[randomint]);
-            soundint = 0;
-        }
+        Random rnd = new Random();
+        int randomint = rnd.Next(0, 3);
+        SoundService.PlaySound(Gamesounds[randomint]);
+
     }
     public void circlechanger()
     {
@@ -138,8 +137,6 @@ public class MyMinigame6 : MinigameDefBase
           OnClick = (args) =>
           {
               progressClick(Ycord, clickcount);
-              soundint++;
-              sounds();
               clickcount++;
               Update();
               imageswap();
@@ -243,13 +240,14 @@ public class MyMinigame6 : MinigameDefBase
 
     public async Task StartEnemyClick()
     {
-        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(200));
+        using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(300));
+
 
         while (await timer.WaitForNextTickAsync() && gameover == false)
         {
 
-            clickcount2 = clickcount2 + -30;
-
+            clickcount2 = clickcount2 + -45;
+            soundint = soundint + 1;
 
             switch (clickcount2)
             {
@@ -263,6 +261,14 @@ public class MyMinigame6 : MinigameDefBase
                     Update();
                     break;
             }
+
+            if (soundint >= 8)
+            {
+                sounds();
+                Update();
+                soundint = 0;
+            }
+
 
 
             Progress();
