@@ -25,6 +25,7 @@ public class MyMinigame6 : MinigameDefBase
     int circleY = 500;
     int frog1 = 1;
 
+    int soundint = 0;
     bool gameover = false;
 
     string redcol = "red";
@@ -73,7 +74,7 @@ public class MyMinigame6 : MinigameDefBase
                   {
                       gamestart();
                       Elements.KillId("StartCircle");
-                      Elements.KillId("Frog");
+                      Elements.KillId("Frog4");
                       Update();
 
                   },
@@ -111,12 +112,15 @@ public class MyMinigame6 : MinigameDefBase
 
     public void sounds()
     {
-        List<string> Gamesounds = new List<string> { "Armwrestling3.wav", "Armwrestling2.wav", "Armwrestling1.wav" };
+        List<string> Gamesounds = new List<string> { "/audio/Armwrestling3.wav", "/audio/Armwrestling2.wav", "/audio/Armwrestling1.wav" };
 
-        Random rnd = new Random();
-        int randomint = rnd.Next(0, 3);
-
-
+        if (soundint >= 6)
+        {
+            Random rnd = new Random();
+            int randomint = rnd.Next(0, 3);
+            SoundService.PlaySound(Gamesounds[randomint]);
+            soundint = 0;
+        }
     }
     public void circlechanger()
     {
@@ -134,7 +138,8 @@ public class MyMinigame6 : MinigameDefBase
           OnClick = (args) =>
           {
               progressClick(Ycord, clickcount);
-              tencount++;
+              soundint++;
+              sounds();
               clickcount++;
               Update();
               imageswap();
@@ -245,6 +250,7 @@ public class MyMinigame6 : MinigameDefBase
 
             clickcount2 = clickcount2 + -30;
 
+
             switch (clickcount2)
             {
                 case <= 300:
@@ -272,6 +278,7 @@ public class MyMinigame6 : MinigameDefBase
         if (gameover == false)
         {
             clickcount2 = clickcount2 + 12 * frog1;
+
 
             switch (clickcount2)
             {
